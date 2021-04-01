@@ -8,7 +8,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
 `;
 
 const Logo = styled.h1`
