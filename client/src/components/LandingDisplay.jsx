@@ -13,8 +13,10 @@ const Container = styled.div`
 const Row = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    width: 60%;
     flex-direction: row;
+    margin-top: 50px;
 `;
 
 const FormWrapper = styled.div`
@@ -67,18 +69,51 @@ const SubmitButton = styled.button`
     margin-top: 15px;
 `;
 
+const InfoContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+`;
+
+const InfoTitle = styled.h2`
+    text-decoration: underline;
+`;
+
+const List = styled.ul`
+    list-style: square;
+    max-width: 85%;
+`;
+
+const Item = styled.li`
+    text-decoration: under line;
+    text-decoration-color: #b3b4b5;
+    margin-bottom: 25px;
+    font-size: 18px;
+`;
+
+const Highlight = styled.span`
+    color: #1cd6cd;
+    text-decoration: underline;
+    text-decoration-color: #b3b4b5;
+`;
 
 export default function LandingDisplay() {
     return (
         <Container>
             <div className="typewriter">
-                <h1>Daily leetcode problems, sign up below.</h1>
+                <h1>Daily <Highlight>leetcode();</Highlight> problems, sign up below.</h1>
             </div>
 
             <Row>
-                
-
-
+                <InfoContainer>
+                   <InfoTitle>Or simple service...</InfoTitle>  
+                   <List>
+                        <Item>Daily problems with solutions, emailed to you and on this site.</Item>
+                        <Item>Leaderboards and commenting</Item>
+                        <Item>We are not leetcode. We are focused on consistency, and through doing even one problem a day, you can get better at problem solving.</Item>
+                    </List>
+                </InfoContainer>
 
                 <FormWrapper>
                     <Form>
