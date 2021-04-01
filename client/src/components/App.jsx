@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import styled from 'styled-components';
+// Children components
+import Header from './Header.jsx';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = 
-            {
+// Styling
+const Container = styled.div`
+    display: flex;
+    align-items; center;
+    flex-direction: column;
+`;
 
-            }
-    }
-
-    render() {
-        return (
-
-        );
-    }
+export default function App() {
+    return (
+        <Container>
+            <Header />
+        </Container>
+    );
 }
-
-export default App;
