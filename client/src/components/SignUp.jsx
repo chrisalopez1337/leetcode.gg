@@ -71,62 +71,173 @@ const SubmitButton = styled.button`
     }
     margin-top: 15px;
 `;
+
+const Message = styled.div`
+    max-width: 400px;
+    margin-left: 15px;
+`;
 export default function SignUp() {
-    // Form data state
-    const [fields, setFields] = useState({ username: '', email: '', password: '', pwdVerify: ''});
-    const { username, email, password, pwdVerify } = fields;
-    // Form data handler
-    function handleForm(e) {
-        const target = { e };
-        const { name, value } = target;
-        setFields({ ...fields, [name]: value });
+         // Store form data;
+    const [fields, setFields] = useState({ username: '', password: '', verifyPassword: '', email: '' });
+    const { username, password, verifyPassword, email } = fields;
+
+    // Store user messaging
+    const [messages, setMessages] = useState({ submitMessage: '', usernameMessage: '', passwordMessage: '', verifyPasswordMessage: '', emailMessage: ''});
+    const { usernameMessage, passwordMessage, verifyPasswordMessage, emailMessage, submitMessage } = messages;
+
+    // Update handlers
+    function handleChange(e) {
+        const { target } = e;
+        const { value, name } = target;
+        setFields({...fields, [name]: value});
     }
 
-
-    // Messaging state
-    const [messages, setMessages] = useState({ 
-                                                usernameMsg: { text: '', error: 'empty' }, 
-                                                emailMsg: { text: '', error: 'empty' },
-                                                passwordMsg: { text: '', error: 'empty' },
-                                                pwdVerifyMsg: { text: '', error: 'empty' },
-                                            });
-    const { usernameMsg, emailMsg, passwordMsg, pwdVerifyMsg } = messages;
-    // Message handler
-    function handleMessage(type, text, error) {
-        const newObj = { text, error };
-        setMessages({ ...messages, [type]: newObj });
+    function handleMessage(name, value) {
+        setMessages({...messages, [name]: value});
     }
-
-    // Username field validation
+    // Form validation for username: 4-10 Chars no special.
     useEffect(() => {
-        if (username === '') { 
-            setMessages(usernameMsg, '', 'empty'); 
+        if (username === '') {
+            handleMessage('usernameMessage', '');
         } else {
             const regex = new RegExp("^[a-zA-Z0-9]{4,10}$");
             if (regex.test(username)) {
-                // Make sure the username is not already in use
+                // Make sure username doesnt already exist.
+                axios.get(`/api/users/get/${username}`)
+                    .then(({ data }) => {
+                        if (!data.username) {
+                            // Username is available.
+                            handleMessage('usernameMessage', '');
+                        } else {
+                            // Username is taken;
+                            const message = 'Username is already taken';
+                            handleMessage('usernameMessage', message);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            } else {
+                const message = 'Username must be 4-10 characters, and contain no special characters.';
+                handleMessage('usernameMessage', message)
             }
         }
     }, [username]);
 
+    // Form validation for password
+    useEffect(() => {
+        if (password === '') {
+            handleMessage('passwordMessage', '');
+        } else {
+            const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+            if (regex.test(password)) {
+                handleMessage('passwordMessage', '');
+            } else {
+                handleMessage('passwordMessage', 'Password must be eight or more characters, contain atleast one uppercase, one symbol, and one lowercase.');
+            }
+        }
+    }, [password]);
+
+    // Form validation for password verification
+    useEffect(() => {
+        if (verifyPassword === '' && password === '') {
+            handleMessage('verifyPasswordMessage', '');
+        } else if (verifyPassword === password) {
+            handleMessage('verifyPasswordMessage', '');
+        } else {
+            handleMessage('verifyPasswordMessage', 'Passwords must match');
+        }
+    }, [verifyPassword]);
+
+
+    // Form validation for email
+    useEffect(() => {
+        if (email === '') {
+            handleMessage('emailMessage', '');
+        } else {
+            const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            if (regex.test(email.toLowerCase())) {
+                // First make sure the email hasnt already been registered.
+                axios.get(`/api/users/get/${email}`)
+                    .then(({ data }) => {
+                        if (!data.email) {
+                            // This means the email hasnt been taken.
+                            handleMessage('emailMessage', '');
+                        } else {
+                            // The email is already registered.
+                            const message = 'This email is already registered';
+                            handleMessage('emailMessage', message);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            } else {
+                handleMessage('emailMessage', 'Please enter a valid email.');
+            }
+        }
+    }, [email]);
+
+
+    // Submit handler
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        let valid = true; 
+
+        const requiredFields = [username, email, password, verifyPassword];
+        const errorMessages = [usernameMessage, emailMessage, passwordMessage, verifyPasswordMessage];
+        const fieldError = 'All fields must be filled out.';
+        const formatError = 'Please make sure all fields are formatted correctly.';
+
+        for (let i = 0; i < requiredFields.length; i++) {
+            const fieldItem = requiredFields[i];
+            const formatItem = errorMessages[i];
+            if (fieldItem === '') {
+                return handleMessage('submitMessage', fieldError);
+            }
+
+            if (formatItem !== '') {
+                return handleMessage('submitMessage', formatError);
+            }
+        }
+
+
+        // Format the data to be POSTed.
+        const userData = { username, email, password };
+        // Create the user.
+        axios.post('/api/users/create', userData)
+            .then(res => {
+                const message = `Thanks for signing up ${username}! Please log in :)`;
+                handleMessage('submitMessage', message);
+            })
+            .catch(err => console.error(err));
+    }
+
     return (
         <Container>
             <FormWrapper>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <h1>Sign Up</h1>
                     <Label htmlFor="username">Username:</Label>
-                    <Input type="text" name="username" value={username} onChange={handleForm} />
+                    <Input type="text" name="username" value={username} onChange={handleChange} />
 
+                    { usernameMessage === '' ? null : <Message><p>{usernameMessage}</p></Message> }
+            
                     <Label htmlFor="email">Email:</Label>
-                    <Input type="email" name="email" value={email} onChange={handleForm} />
+                    <Input type="email" name="email" value={email} onChange={handleChange} />
+
+                    { emailMessage === '' ? null : <Message><p>{emailMessage}</p></Message> }
 
                     <Label htmlFor="password">Password:</Label>
-                    <Input type="password" name="password" value={password} onChange={handleForm} />
+                    <Input type="password" name="password" value={password} onChange={handleChange} />
 
-                    <Label htmlFor="pwdVerify">Verify your password:</Label>
-                    <Input type="password" name="pwdVerify" value={pwdVerify} onChange={handleForm} />
+                    { passwordMessage === '' ? null : <Message><p>{passwordMessage}</p></Message> }
 
-                    <SubmitButton>Sign Up</SubmitButton>
+                    <Label htmlFor="verifyPassword">Verify your password:</Label>
+                    <Input type="password" name="verifyPassword" value={verifyPassword} onChange={handleChange} />
+            
+                    { verifyPasswordMessage === '' ? null : <Message><p>{verifyPasswordMessage}</p></Message> }
+
+                    <SubmitButton type="submit">Sign Up</SubmitButton>
+                    
+                    { submitMessage === '' ? null : <Message><p>{submitMessage}</p></Message> }
                 </Form>
             </FormWrapper>
         </Container>
