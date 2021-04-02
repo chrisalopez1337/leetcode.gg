@@ -97,22 +97,34 @@ export default function SignUp() {
         setMessages({ ...messages, [type]: newObj });
     }
 
+    // Username field validation
+    useEffect(() => {
+        if (username === '') { 
+            setMessages(usernameMsg, '', 'empty'); 
+        } else {
+            const regex = new RegExp("^[a-zA-Z0-9]{4,10}$");
+            if (regex.test(username)) {
+                // Make sure the username is not already in use
+            }
+        }
+    }, [username]);
+
     return (
         <Container>
             <FormWrapper>
                 <Form>
                     <h1>Sign Up</h1>
                     <Label htmlFor="username">Username:</Label>
-                    <Input type="text" name="username" />
+                    <Input type="text" name="username" value={username} onChange={handleForm} />
 
                     <Label htmlFor="email">Email:</Label>
-                    <Input type="email" name="email" />
+                    <Input type="email" name="email" value={email} onChange={handleForm} />
 
                     <Label htmlFor="password">Password:</Label>
-                    <Input type="password" name="password" />
+                    <Input type="password" name="password" value={password} onChange={handleForm} />
 
                     <Label htmlFor="pwdVerify">Verify your password:</Label>
-                    <Input type="password" name="pwdVerify" />
+                    <Input type="password" name="pwdVerify" value={pwdVerify} onChange={handleForm} />
 
                     <SubmitButton>Sign Up</SubmitButton>
                 </Form>
