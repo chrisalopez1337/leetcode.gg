@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { GoogleLogin } from 'react-google-login';
 
 // Styling
 const Container = styled.div`
@@ -15,8 +16,8 @@ const Row = styled.div`
     align-items: center;
     justify-content: space-around;
     width: 60%;
+    margin-top: 10px;
     flex-direction: row;
-    margin-top: 50px;
 `;
 
 const FormWrapper = styled.div`
@@ -25,17 +26,19 @@ const FormWrapper = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    border: 3px solid #1cd6cd;
+    box-shadow: 0px 0px 25px #1cd6cd;
+    border-radius: 7px;
+    padding: 25px 10px 25px 10px; 
+    min-width: 300px;
+    min-height: 300px;
 `;
 
 const Form = styled.form`
-    border: 3px solid #1cd6cd;
-    border-radius: 7px;
-    padding: 25px 10px 25px 10px; 
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
-    width: 300px;
 `;
 
 const Input = styled.input`
@@ -82,7 +85,7 @@ const InfoTitle = styled.h2`
 
 const List = styled.ul`
     list-style: square;
-    max-width: 85%;
+    max-width: 75%;
 `;
 
 const Item = styled.li`
@@ -96,6 +99,10 @@ const Highlight = styled.span`
     color: #1cd6cd;
     text-decoration: underline;
     text-decoration-color: #b3b4b5;
+`;
+
+const SignUpTitle = styled.h3`
+    margin-left: 20px;
 `;
 
 export default function LandingDisplay() {
@@ -133,7 +140,6 @@ export default function LandingDisplay() {
                     </Form>
                 </FormWrapper>
             </Row>
-
         </Container>
     );
 }

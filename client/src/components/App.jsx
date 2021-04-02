@@ -3,6 +3,8 @@ import styled from 'styled-components';
 // Children components
 import Header from './Header.jsx';
 import LandingDisplay from './LandingDisplay.jsx';
+import SignUp from './SignUp.jsx';
+
 
 // Styling
 const Container = styled.div`
@@ -12,10 +14,17 @@ const Container = styled.div`
 `;
 
 export default function App() {
+    const [page, setPage] = useState('landing');
+    // Conditional rendering
+    const pageRender = page === 'landing'
+        ? <LandingDisplay setPage={setPage} />
+        : page === 'sign-up'
+        ? <SignUp setPage={setPage} />
+        : <></>
     return (
         <Container>
-            <Header />
-            <LandingDisplay />
+            <Header setPage={setPage} />
+            {pageRender}
         </Container>
     );
 }

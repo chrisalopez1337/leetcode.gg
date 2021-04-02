@@ -15,11 +15,11 @@ const Logo = styled.h1`
     margin-left: 10px;
 `;
 
-export default function Header() {
+export default function Header({ setPage }) {
     return (
         <Container>
             <Logo>Leetcode.gg | </Logo>
-            <HeaderButtons />
+            <HeaderButtons setPage={setPage} />
         </Container>
     );
 }

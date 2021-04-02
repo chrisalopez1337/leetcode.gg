@@ -23,10 +23,10 @@ const NavItem = styled.h3`
     }
 `;
 
-export default function HeaderButtons() {
+export default function HeaderButtons({ setPage }) {
     return (
         <Container>
-            <NavItem>Sign Up</NavItem>
+            <NavItem onClick={() => setPage('sign-up')}>Sign Up</NavItem>
             <NavItem>Log In </NavItem>
         </Container>
     )
