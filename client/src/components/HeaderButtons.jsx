@@ -27,7 +27,7 @@ export default function HeaderButtons({ setPage }) {
     return (
         <Container>
             <NavItem onClick={() => setPage('sign-up')}>Sign Up</NavItem>
-            <NavItem>Log In </NavItem>
+            <NavItem onClick={() => setPage('log-in')}>Log In </NavItem>
         </Container>
     )
 }

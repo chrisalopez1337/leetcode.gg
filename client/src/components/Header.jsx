@@ -13,12 +13,17 @@ const Container = styled.div`
 
 const Logo = styled.h1`
     margin-left: 10px;
+    transition-duration: 0.2s;
+    &:hover {
+        color: #1cd6cd;
+        cursor: pointer;
+    }
 `;
 
 export default function Header({ setPage }) {
     return (
         <Container>
-            <Logo>Leetcode.gg | </Logo>
+            <Logo onClick={() => setPage('landing')}>Leetcode.gg | </Logo>
             <HeaderButtons setPage={setPage} />
         </Container>
     );
