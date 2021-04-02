@@ -72,18 +72,59 @@ const SubmitButton = styled.button`
     margin-top: 15px;
 `;
 export default function LogIn() {
+     // Set up form data
+    const [fields, setFields] = useState({ username: '', password: '' });
+    const { username, password } = fields;
+
+    // Set up message data
+    const [messages, setMessages] = useState({ errorMessage: '', successMessage: ''});
+    const { errorMessage, successMessage } = messages;
+
+    // Handle message update
+    function handleMessage(messageType, value) {
+        setMessages({...messages, [messageType] : value });
+    }
+
+    // Handle input change
+    function handleChange(e) {
+        const { target } = e;
+        const { name, value } = target;
+        setFields({...fields, [name]: value });
+    }
+
+    // Submit handler form
+    function handleSubmit(e) {
+        e.preventDefault();
+        // Send user data to the validation route.
+        console.log(username, password);
+        if (username === '' || password === '') {
+            return handleMessage('errorMessage', 'Please fill out all forms.');
+        }
+        const userData = { username, password };
+        axios.post('/api/users/validate', userData)
+            .then(({ data }) => {
+                if (data.valid) {
+                    handleMessage('successMessage', 'Logged in! Loading profile...');
+                } else {
+                    // User is either not found or invalid.
+                    handleMessage('errorMessage', 'Please double check your credentials.');
+                }
+            })
+            .catch(err => console.log(err));
+    }
     return (
         <Container>
             <FormWrapper>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <h1>Log In</h1>
-                    <Label htmlFor="searchItem">Username/Email:</Label>
-                    <Input type="text" name="searchItem" />
+                    <Label htmlFor="username">Username/Email:</Label>
+                    <Input type="text" name="username" value={username} onChange={handleChange} />
 
                     <Label htmlFor="password">Password:</Label>
-                    <Input type="password" name="password" />
+                    <Input type="password" name="password" value={password} onChange={handleChange} />
 
                     <SubmitButton>Log In</SubmitButton>
+                    { errorMessage === '' ? null : <p>{errorMessage}</p> }
                 </Form>
             </FormWrapper>
         </Container>

@@ -40,5 +40,25 @@ module.exports = {
             console.log(err);
             res.sendStatus(500);
         }
+    },
+
+    validateUser: async (req, res) => {
+        try {
+            const { username, password } = req.body;
+            const query = { username };
+            // Fetch hashed password
+            const user = await userModels.getUser(query);
+            if (!user) {
+                res.status(200).send({ valid: false })
+                return
+            }
+            const hashed = user?.password;
+            const result = await bcrypt.compare(password, hashed);
+            const response = { valid: result };
+            res.status(200).send(response);
+        } catch(err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
     }
 }
