@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 export default function App() {
-    const [page, setPage] = useState('landing');
+    const [page, setPage] = useState('sign-up');
     // Conditional rendering
     const pageRender = page === 'landing'
         ? <LandingDisplay setPage={setPage} />
