@@ -72,6 +72,31 @@ const SubmitButton = styled.button`
     margin-top: 15px;
 `;
 export default function SignUp() {
+    // Form data state
+    const [fields, setFields] = useState({ username: '', email: '', password: '', pwdVerify: ''});
+    const { username, email, password, pwdVerify } = fields;
+    // Form data handler
+    function handleForm(e) {
+        const target = { e };
+        const { name, value } = target;
+        setFields({ ...fields, [name]: value });
+    }
+
+
+    // Messaging state
+    const [messages, setMessages] = useState({ 
+                                                usernameMsg: { text: '', error: 'empty' }, 
+                                                emailMsg: { text: '', error: 'empty' },
+                                                passwordMsg: { text: '', error: 'empty' },
+                                                pwdVerifyMsg: { text: '', error: 'empty' },
+                                            });
+    const { usernameMsg, emailMsg, passwordMsg, pwdVerifyMsg } = messages;
+    // Message handler
+    function handleMessage(type, text, error) {
+        const newObj = { text, error };
+        setMessages({ ...messages, [type]: newObj });
+    }
+
     return (
         <Container>
             <FormWrapper>
