@@ -20,7 +20,7 @@ const BoxRow = styled.div`
 const Box = styled.div`
     display: flex;
     align-items: center;
-    justify-content:
+    justify-content: center;
     flex-direction: column;
     border: 3px solid #b3b4b5;
     box-shadow: 0px 0px 10px #b3b4b5;
@@ -34,7 +34,12 @@ const Box = styled.div`
     &:hover {
         border: 3px solid #1cd6cd;
         box-shadow: 0px 0px 25px #1cd6cd;
+        background-color: whitesmoke;
+        color: #1cd6cd;
     }
+`;
+
+const BoxText = styled.h2`
 `;
 
 export default function Dashboard({ setPage, userData }) {
@@ -43,13 +48,21 @@ export default function Dashboard({ setPage, userData }) {
             <h1>Dashboard</h1>
 
             <BoxRow>
-                <Box></Box>
-                <Box></Box>
+                <Box>
+                    <BoxText>Your Submissions</BoxText>
+                </Box>
+                <Box onClick={() => setPage('todays-question')}>
+                    <BoxText>Todays Question</BoxText>
+                </Box>
             </BoxRow>
 
             <BoxRow>
-                <Box></Box>
-                <Box></Box>
+                <Box>
+                    <BoxText>Leaderboard</BoxText>
+                </Box>
+                <Box>
+                    <BoxText>Account Settings</BoxText>
+                </Box>
             </BoxRow>
         </Container>
     );

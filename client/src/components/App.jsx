@@ -9,6 +9,7 @@ import LandingDisplay from './LandingDisplay.jsx';
 import SignUp from './SignUp.jsx';
 import LogIn from './LogIn.jsx';
 import Dashboard from './Dashboard.jsx';
+import TodaysQuestion from './TodaysQuestion.jsx';
 
 
 
@@ -44,7 +45,7 @@ export default function App() {
             axios.get(`/api/users/get/${data}`)
                 .then(({ data }) => {
                     setUserData(data);
-                    setPage('dashboard');
+                    setPage('todays-question'); // dashboard
                 })
                 .catch(console.log);
         } else {
@@ -63,6 +64,8 @@ export default function App() {
         ? <LogIn setPage={setPage} logIn={logIn} />
         : page === 'dashboard'
         ? <Dashboard setPage={setPage} />
+        : page === 'todays-question'
+        ? <TodaysQuestion setPage={setPage} />
         : <></>
     return (
         <Container>
