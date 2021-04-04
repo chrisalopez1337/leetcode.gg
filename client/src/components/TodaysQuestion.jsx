@@ -27,7 +27,8 @@ const QuestionWrapper = styled.div`
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    min-width: 500px;
+    min-width: 600px;
+    max-width: 600px;
 `;
 
 const QuestionNavBar = styled.div`
