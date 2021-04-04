@@ -71,7 +71,7 @@ const SubmitButton = styled.button`
     }
     margin-top: 15px;
 `;
-export default function LogIn() {
+export default function LogIn({ logIn, setPage }) {
      // Set up form data
     const [fields, setFields] = useState({ username: '', password: '' });
     const { username, password } = fields;
@@ -96,7 +96,6 @@ export default function LogIn() {
     function handleSubmit(e) {
         e.preventDefault();
         // Send user data to the validation route.
-        console.log(username, password);
         if (username === '' || password === '') {
             return handleMessage('errorMessage', 'Please fill out all forms.');
         }
@@ -104,6 +103,8 @@ export default function LogIn() {
         axios.post('/api/users/validate', userData)
             .then(({ data }) => {
                 if (data.valid) {
+                    logIn(username);
+                    setPage('landing');
                     handleMessage('successMessage', 'Logged in! Loading profile...');
                 } else {
                     // User is either not found or invalid.

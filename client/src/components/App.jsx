@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 // Utils
 import { setOne, getOne, deleteOne } from 'local-js';
@@ -52,6 +53,17 @@ export default function App() {
         setUserData(null);
     }
 
+    // User hoisting
+    useEffect(() => {
+        // Check for username in localStorage
+        const key = 'current-user';
+        const data = getOne(key);
+        // If the data exists, query the users data and then set it.
+        if (data) {
+            fetchAndUpdateUser(data)
+        }
+    }, []);
+
     
 
 
@@ -62,7 +74,7 @@ export default function App() {
         : page === 'sign-up'
         ? <SignUp setPage={setPage} />
         : page === 'log-in'
-        ? <LogIn setPage={setPage} />
+        ? <LogIn setPage={setPage} logIn={logIn} />
         : <></>
     return (
         <Container>
