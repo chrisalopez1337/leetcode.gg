@@ -49,12 +49,12 @@ module.exports = {
             // Fetch hashed password
             const user = await userModels.getUser(query);
             if (!user) {
-                res.status(200).send({ valid: false })
+                res.status(200).send({ valid: false, data: false });
                 return
             }
             const hashed = user?.password;
             const result = await bcrypt.compare(password, hashed);
-            const response = { valid: result };
+            const response = { valid: result, data: user };
             res.status(200).send(response);
         } catch(err) {
             console.log(err);

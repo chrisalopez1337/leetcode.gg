@@ -8,6 +8,7 @@ import Header from './Header.jsx';
 import LandingDisplay from './LandingDisplay.jsx';
 import SignUp from './SignUp.jsx';
 import LogIn from './LogIn.jsx';
+import Dashboard from './Dashboard.jsx';
 
 
 
@@ -21,51 +22,35 @@ const Container = styled.div`
 export default function App() {
     // User management
     const [userData, setUserData] = useState(null);
-    // GET users data
-    function fetchAndUpdateUser(username) {
-        // Retrieve user data
-        axios.get(`/api/users/get/${username}`).
-            then(({ data }) => {
-                if (!data?.username) {
-                    setUserData(null);
-                } else {
-                    setUserData(data);
-                }
-            })
-            .catch(console.log);
-    }
 
-    // Persist username in local storage.
-    function logIn(username) {
-        // Set item to local storage
+    function logIn(data) {
+        setUserData(data);
         const key = 'current-user';
-        setOne(key, username);
-        // Mount user data
-        fetchAndUpdateUser(username);
+        setOne(key, data.username);
+        setPage('dashboard');
     }
 
-    // Log a user out
     function logOut() {
-        // Remove user from local stroage
+        setUserData(null);
         const key = 'current-user';
         deleteOne(key);
-        // Remove there user data from state
-        setUserData(null);
+        setPage('landing');
     }
 
-    // User hoisting
     useEffect(() => {
-        // Check for username in localStorage
         const key = 'current-user';
         const data = getOne(key);
-        // If the data exists, query the users data and then set it.
         if (data) {
-            fetchAndUpdateUser(data)
+            axios.get(`/api/users/get/${data}`)
+                .then(({ data }) => {
+                    setUserData(data);
+                    setPage('dashboard');
+                })
+                .catch(console.log);
+        } else {
+            setUserData(null);
         }
     }, []);
-
-    
-
 
     // Conditional rendering
     const [page, setPage] = useState('landing');
@@ -75,10 +60,12 @@ export default function App() {
         ? <SignUp setPage={setPage} />
         : page === 'log-in'
         ? <LogIn setPage={setPage} logIn={logIn} />
+        : page === 'dashboard'
+        ? <Dashboard setPage={setPage} />
         : <></>
     return (
         <Container>
-            <Header setPage={setPage} />
+            <Header setPage={setPage} userData={userData} logOut={logOut} />
             {pageRender}
         </Container>
     );

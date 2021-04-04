@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { setOne } from 'local-js';
 
 // Styling
 const Container = styled.div`
@@ -103,9 +104,10 @@ export default function LogIn({ logIn, setPage }) {
         axios.post('/api/users/validate', userData)
             .then(({ data }) => {
                 if (data.valid) {
-                    logIn(username);
-                    setPage('landing');
-                    handleMessage('successMessage', 'Logged in! Loading profile...');
+                    const key = 'current-user';
+                    setOne(key, data.data.username);
+                    logIn(data.data);
+                    setPage('dashboard');
                 } else {
                     // User is either not found or invalid.
                     handleMessage('errorMessage', 'Please double check your credentials.');

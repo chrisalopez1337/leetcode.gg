@@ -23,11 +23,27 @@ const NavItem = styled.h3`
     }
 `;
 
-export default function HeaderButtons({ setPage }) {
+export default function HeaderButtons({ setPage, userData, logOut }) {
+    // Conditionally render depending if the user is logged in or not.
+    const loggedOut = (
+                        <>
+                        <NavItem onClick={() => setPage('sign-up')}>Sign Up</NavItem>
+                        <NavItem onClick={() => setPage('log-in')}>Log In </NavItem>
+                        </>
+                      );
+
+    const loggedIn = (
+                        <>
+                        <NavItem onClick={() => logOut()}>Log Out</NavItem>
+                        <NavItem onClick={() => setPage('dashboard')}>Dashboard</NavItem>
+                        </>
+                     );
+    const render = userData
+        ? loggedIn
+        : loggedOut;
     return (
-        <Container>
-            <NavItem onClick={() => setPage('sign-up')}>Sign Up</NavItem>
-            <NavItem onClick={() => setPage('log-in')}>Log In </NavItem>
+        <Container key={userData}>
+            {render}
         </Container>
     )
 }
