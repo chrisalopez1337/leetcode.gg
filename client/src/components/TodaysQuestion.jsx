@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+// Children components
+import TodaysQuestionPrompt from './TodaysQuestionPrompt.jsx';
 
 // Styling
 const Container = styled.div`
@@ -56,11 +58,16 @@ const QuestionNavButton = styled.button`
 `;
 
 export default function TodaysQuestion() {
+    // Button handlers
     const [render, setRender] = useState('prompt');
     function buttonHandler(e) {
         const name = e.target.name;
         setRender(name);
     }
+    // Conditional rendering
+    const itemRender = render === 'prompt'
+        ? <TodaysQuestionPrompt />
+        : <></>;
     return (
         <Container>
             <h1>Todays Question</h1>
@@ -70,6 +77,7 @@ export default function TodaysQuestion() {
                         <QuestionNavButton selected={render === 'prompt' ? true : false} name="prompt" onClick={(e) => buttonHandler(e)}>Prompt</QuestionNavButton>       
                         <QuestionNavButton selected={render === 'notepad' ? true : false} name="notepad" onClick={(e) => buttonHandler(e)}>Notepad</QuestionNavButton>       
                     </QuestionNavBar>
+                    {itemRender}
                 </QuestionWrapper>
             </ContentWrapper>
         </Container>
