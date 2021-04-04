@@ -4,6 +4,7 @@ import styled from 'styled-components';
 // Children components
 import TodaysQuestionPrompt from './TodaysQuestionPrompt.jsx';
 import TodaysQuestionNotepad from './TodaysQuestionNotepad.jsx';
+import TodaysQuestionSolution from './TodaysQuestionSolution.jsx';
 
 // Styling
 const Container = styled.div`
@@ -71,6 +72,8 @@ export default function TodaysQuestion() {
         ? <TodaysQuestionPrompt />
         : render === 'notepad'
         ? <TodaysQuestionNotepad />
+        : render === 'solution'
+        ? <TodaysQuestionSolution />
         : <></>;
     return (
         <Container>

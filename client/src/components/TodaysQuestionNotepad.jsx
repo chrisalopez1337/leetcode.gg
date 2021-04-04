@@ -36,6 +36,7 @@ const Textarea = styled.textarea`
     width: 99%; 
     border: transparent;
     resize: none;
+    font-size: 16px;
 `;
 
 export default function TodaysQuestionNotepad() {
