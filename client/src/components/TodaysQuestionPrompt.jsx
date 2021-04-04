@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+// Children components
+import TodaysQuestionHints from './TodaysQuestionHints.jsx';
 
 // Styling
 const Container = styled.div`
@@ -65,7 +67,11 @@ const SampleInputWrapper = styled.div`
 `;
 
 
+
+
 export default function TodaysQuestionPrompt() {
+    // Sample for rending
+    const hints = ['This is an easy question, the formula is a + b = c'];
     return (
         <Container>
             <TitleRow>
@@ -99,6 +105,9 @@ export default function TodaysQuestionPrompt() {
                 <ul>
                     <li><CodeHighlight>N/A</CodeHighlight></li>
                 </ul>
+
+                <PromptHeader>Hints</PromptHeader>
+                { hints.map((item, i) => <TodaysQuestionHints item={item} key={i} count={i} />)}
             </PromptContainer>
         </Container>
     );
