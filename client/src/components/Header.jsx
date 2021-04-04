@@ -23,7 +23,7 @@ const Logo = styled.h1`
 export default function Header({ setPage, userData, logOut }) {
     return (
         <Container>
-            <Logo onClick={() => setPage('landing')}>Leetcode.gg | </Logo>
+            <Logo onClick={() => setPage(userData ? 'dashboard' : 'landing')}>Leetcode.gg | </Logo>
             <HeaderButtons setPage={setPage} userData={userData} logOut={logOut} />
         </Container>
     );

@@ -49,11 +49,12 @@ export default function App() {
                 .catch(console.log);
         } else {
             setUserData(null);
+            setPage('landing');
         }
     }, []);
 
     // Conditional rendering
-    const [page, setPage] = useState('landing');
+    const [page, setPage] = useState(null);
     const pageRender = page === 'landing'
         ? <LandingDisplay setPage={setPage} />
         : page === 'sign-up'
