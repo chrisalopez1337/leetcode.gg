@@ -20,7 +20,6 @@ const TitleRow = styled.div`
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
-    border-top: 0.5px solid  #1cd6cd;
 `;
 
 const Title = styled.h4`

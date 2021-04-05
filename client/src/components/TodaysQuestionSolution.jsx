@@ -13,6 +13,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
+    min-height: 600px;
 `;
 
 const CodeHighlight = styled.span`
@@ -34,8 +35,6 @@ const PromptContainer = styled.div`
     justify-content: flex-start;
     width: 90%;
 `;
-
-
 const Prompt = styled.p``;
 export default function TodaysQuestionSolution() {
     useEffect(() => Prism.highlightAll());

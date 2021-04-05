@@ -5,6 +5,13 @@ body, html {
     background-color: whitesmoke;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 .typewriter h1 {
   overflow: hidden; /* Ensures the content is not revealed until the animation */
   border-right: .15em solid orange; /* The typwriter cursor */
@@ -33,4 +40,16 @@ body, html {
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: orange }
+}
+
+
+.CodeMirror {
+    height: 100% !important;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: auto;
 }

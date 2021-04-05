@@ -29,7 +29,7 @@ const InputWrapper = styled.form`
     box-shadow: 0px 0px 7px #b3b4b5;
     margin-top: 10px;
     margin-bottom: 10px;
-    background-color: #b3b4b5;
+    border-radius: 4px;
 `;
 
 const Textarea = styled.textarea`
@@ -37,6 +37,10 @@ const Textarea = styled.textarea`
     border: transparent;
     resize: none;
     font-size: 16px;
+    background-color: #272822;
+    color: whitesmoke;
+    border-radius: 4px;
+    padding: 10px;
 `;
 
 export default function TodaysQuestionNotepad() {
@@ -64,7 +68,6 @@ export default function TodaysQuestionNotepad() {
 
     return (
         <Container>
-            <PromptHeader>Notepad</PromptHeader>
             <InputWrapper>
                 <Textarea placeholder="Write stuff here" rows="30" value={text || ''} onChange={handleText}></Textarea>
             </InputWrapper>

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import TodaysQuestionPrompt from './TodaysQuestionPrompt.jsx';
 import TodaysQuestionNotepad from './TodaysQuestionNotepad.jsx';
 import TodaysQuestionSolution from './TodaysQuestionSolution.jsx';
+import IDE from './IDE.jsx';
 
 // Styling
 const Container = styled.div`
@@ -22,6 +23,7 @@ const ContentWrapper = styled.div`
     border: 3px solid #1cd6cd;
     box-shadow: 0px 0px 5px #1cd6cd;
     border-radius: 7px;
+    min-height: 650px;
 `;
 
 const QuestionWrapper = styled.div`
@@ -60,6 +62,16 @@ const QuestionNavButton = styled.button`
     }
 `;
 
+const CodeWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    min-width: 700px;
+    max-width: 700px;
+    padding-right: 10px;
+    height: 600px;
+`;
 export default function TodaysQuestion() {
     // Button handlers
     const [render, setRender] = useState('prompt');
@@ -87,6 +99,10 @@ export default function TodaysQuestion() {
                     </QuestionNavBar>
                     {itemRender}
                 </QuestionWrapper>
+                
+                <CodeWrapper>
+                    <IDE />
+                </CodeWrapper>
             </ContentWrapper>
         </Container>
     );
