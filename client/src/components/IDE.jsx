@@ -19,6 +19,27 @@ function addTwo(a, b) {
 
 export default function IDE() {
     const [code, setCode] = useState(baseCode);
+    function handleChange(e) {
+        setCode(e.target.value);
+    }
+
+    // Store code in local storage
+    useEffect(() => {
+        if (code === baseCode) { return }
+
+        const key = 'stored-code';
+        setOne(key, code);
+    }, [code]);
+
+    useEffect(() => {
+        const newCode = getOne('stored-code');
+        setCode(newCode);
+        return function() {
+            const newCode = getOne('stored-code');
+            setCode(newCode);
+        }
+    }, [])
+
     return (
         <Resizable
             defaultSize={{
@@ -28,7 +49,7 @@ export default function IDE() {
         >
             <CodeMirror
                 className="CodeMirror"
-                value={code}
+                value={code || baseCode}
                 options={{
                     lineNumbers: true,
                     mode: 'javascript',
@@ -37,7 +58,9 @@ export default function IDE() {
                 onBeforeChange={(editor, data, value) => {
                     setCode(value)
                 }}
-                onChange={(editor, data, value) => {}}
+                onChange={(editor, data, value) => {
+                    setCode(value)
+                }}
             />
         </Resizable>
     );
