@@ -9,6 +9,31 @@ class EvalCode {
         this.testCase = testCase;
     }
 
+    async run() {
+        try {
+            // First configure the data 
+            this.formatFileName();
+            this.formatCommand();
+            this.formatCode();
+            // Run the code
+            await this.writeFile();
+            await this.runCode();
+            // Return results
+            const results = 
+                {
+                    stdout: this.stdout,
+                    stderr: this.stderr,
+                    error: {
+                        message: this.err.message,
+                        stack: this.err.stack,
+                    }
+                }
+            return results;
+        } catch(err) {
+
+        }
+    }
+
     formatFileName() {
         const options =
             {
@@ -48,24 +73,19 @@ class EvalCode {
             const { stderr, stdout } = await exec(this.command);
             this.stderr = stderr;
             this.stdout = stdout;
-            console.log(`stderr => ${stderr}`);
-            console.log(`stdout => ${stdout}`);
         } catch(err) {
-            console.log(err);
+            this.err = err;
         }
     }
 }
-const code = `const addTwo = (a,b) => a + b;`
+const code = `const addTwo = (a,b) => a + c;`
 const language = 'javascript';
 const testCase = `addTwo(1,2)`;
 
 const main = async () => {
     const e = new EvalCode(code, language, testCase);
-    e.formatFileName();
-    e.formatCommand();
-    e.formatCode();
-    await e.writeFile();
-    await e.runCode();
+    const response = await e.run();
+    console.log(response)
 }
 
 main();
