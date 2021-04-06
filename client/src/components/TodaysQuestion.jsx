@@ -6,6 +6,7 @@ import TodaysQuestionPrompt from './TodaysQuestionPrompt.jsx';
 import TodaysQuestionNotepad from './TodaysQuestionNotepad.jsx';
 import TodaysQuestionSolution from './TodaysQuestionSolution.jsx';
 import IDE from './IDE.jsx';
+import Eval from './Eval.jsx';
 
 // Styling
 const Container = styled.div`
@@ -73,6 +74,13 @@ const CodeWrapper = styled.div`
     height: 600px;
 `;
 export default function TodaysQuestion() {
+    // Code handler
+    const [evaledCode, setEvaledCode] = useState(null);
+    useEffect(() => {
+        if (evaledCode) {
+            setRender('eval');
+        }
+    }, [evaledCode])
     // Button handlers
     const [render, setRender] = useState('prompt');
     function buttonHandler(e) {
@@ -86,6 +94,8 @@ export default function TodaysQuestion() {
         ? <TodaysQuestionNotepad />
         : render === 'solution'
         ? <TodaysQuestionSolution />
+        : render === 'eval'
+        ? <Eval data={evaledCode} />
         : <></>;
     return (
         <Container>
@@ -101,7 +111,7 @@ export default function TodaysQuestion() {
                 </QuestionWrapper>
                 
                 <CodeWrapper>
-                    <IDE />
+                    <IDE setEvaledCode={setEvaledCode} />
                 </CodeWrapper>
             </ContentWrapper>
         </Container>

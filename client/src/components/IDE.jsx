@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getOne, setOne } from 'local-js';
+import axios from 'axios';
 import styled from 'styled-components';
 import Prism from 'prismjs';
 import {Controlled as CodeMirror} from 'react-codemirror2';
@@ -43,7 +44,7 @@ const Button = styled.button`
     }
 `;
 
-export default function IDE() {
+export default function IDE({ setEvaledCode }) {
     const [code, setCode] = useState(baseCode);
     function handleChange(e) {
         setCode(e.target.value);
@@ -66,10 +67,20 @@ export default function IDE() {
         }
     }, [])
 
+    function handleRunCode() {
+        const data = { code, language: 'javascript', testCase: 'addTwo(1,2)'};
+        console.log('hello')
+        axios.post('/api/js/eval-code', data)
+            .then(({ data }) => {
+                setEvaledCode(data);
+            })
+            .catch(console.log);
+    }
+
     return (
         <>
             <ButtonRow>
-                <Button>Run Code</Button>
+                <Button onClick={() => handleRunCode()}>Run Code</Button>
                 <Button>Submit Code</Button>
             </ButtonRow>
             <Resizable
