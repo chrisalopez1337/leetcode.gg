@@ -11,11 +11,37 @@ import 'codemirror/theme/material.css';
 import 'codemirror/mode/javascript/javascript.js';
 
 
-const baseCode = `
+let baseCode = `
 function addTwo(a, b) {
-    // Your code here...
+    return a + b;
 }
-`.trim()
+`.trim();
+
+// Styling
+const ButtonRow = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    margin-bottom: 10px;
+`;
+
+const Button = styled.button`
+ background-color: #e3bc30;
+    border: transparent;
+    border-radius: 4px;
+    color: white;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 7px;
+    font-family: inherit;
+    font-size: 14px;
+    transition-duration: 0.2s;
+    &:hover {
+        background-color: #1cd6cd;
+        color: white;
+    }
+`;
 
 export default function IDE() {
     const [code, setCode] = useState(baseCode);
@@ -41,27 +67,33 @@ export default function IDE() {
     }, [])
 
     return (
-        <Resizable
-            defaultSize={{
-                width: 700,
-                height: 600
-            }}
-        >
-            <CodeMirror
-                className="CodeMirror"
-                value={code || baseCode}
-                options={{
-                    lineNumbers: true,
-                    mode: 'javascript',
-                    theme: 'material',
+        <>
+            <ButtonRow>
+                <Button>Run Code</Button>
+                <Button>Submit Code</Button>
+            </ButtonRow>
+            <Resizable
+                defaultSize={{
+                    width: 700,
+                    height: 550
                 }}
-                onBeforeChange={(editor, data, value) => {
-                    setCode(value)
-                }}
-                onChange={(editor, data, value) => {
-                    setCode(value)
-                }}
-            />
-        </Resizable>
+            >
+                <CodeMirror
+                    className="CodeMirror"
+                    value={!code ? '' : code}
+                    options={{
+                        lineNumbers: true,
+                        mode: 'javascript',
+                        theme: 'material',
+                    }}
+                    onBeforeChange={(editor, data, value) => {
+                        setCode(value)
+                    }}
+                    onChange={(editor, data, value) => {
+                        setCode(value)
+                    }}
+                />
+            </Resizable>
+        </>
     );
 };
