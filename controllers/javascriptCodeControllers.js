@@ -1,6 +1,4 @@
-const fs = require('fs');
-const { promisify } = require('util');
-const exec = promisify(require('child_process').exec);
+const main = require('../utils/evalCode.js');
 
 // What I want the function to do
 // Take in raw code as a string
@@ -13,8 +11,9 @@ const exec = promisify(require('child_process').exec);
 module.exports = {
     evalCode: async (req, res) => {
         try {
-            await main(req.body.code);
-            res.sendStatus(200);
+            const { code, language, testCase } = req.body;
+            const response = await main(code, language, testCase);
+            res.status(200).send(response);
         } catch(err) {
             console.log(err);
             res.json({ error: err.message, stack: err.stack });

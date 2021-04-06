@@ -23,14 +23,13 @@ class EvalCode {
                 {
                     stdout: this.stdout,
                     stderr: this.stderr,
-                    error: {
-                        message: this.err.message,
-                        stack: this.err.stack,
-                    }
                 }
+            if (this.err) {
+                results['error'] = { message: this.err.message, stack: this.err.stack }
+            }
             return results;
         } catch(err) {
-
+            throw new Error(err);
         }
     }
 
@@ -53,6 +52,10 @@ class EvalCode {
     }
 
     formatCode() {
+        // Check if the last index of the string is ; or not.
+        if (this.code[this.code.length-1] !== ';') {
+            this.code += ';';
+        }
         const options = {
             javascript: `console.log(${this.testCase})`
         }
@@ -78,14 +81,19 @@ class EvalCode {
         }
     }
 }
-const code = `const addTwo = (a,b) => a + c;`
+// Testing
+const code = `const addTwo = (a,b) => a + b;`
 const language = 'javascript';
 const testCase = `addTwo(1,2)`;
 
-const main = async () => {
-    const e = new EvalCode(code, language, testCase);
-    const response = await e.run();
-    console.log(response)
+const main = async (code, language, testCase) => {
+    try {
+        const e = new EvalCode(code, language, testCase);
+        const response = await e.run();
+        return response;
+    } catch(err) {
+        console.log(err);
+    }
 }
 
-main();
+module.exports = main;
