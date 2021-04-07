@@ -20,6 +20,7 @@ class EvalCode {
     __init__() {
         this.formatFileName();
         this.formatRunCommand();
+        this.formatCode();
     }
 
     formatFileName() {
@@ -47,6 +48,27 @@ class EvalCode {
         const key = this.language;
         const command = languageOptions[key];
         this.command = `${command} ${this.fileName}`;
+    }
+
+    formatCode() {
+        const testCase = this.testCaseInfo.case;
+        const languageOptions =
+            {
+                javascript: `console.log(${testCase})`,
+                python: `print(${testCase})`,
+            }
+        const key = this.language;
+        const addition = languageOptions[key];
+        // Edge case handlers
+        if (this.language === 'javascript') {
+            if (this.code[this.code.length-1] !== ';') {
+                this.code += ';';
+            }
+            this.code += addition;
+        } else if (this.language === 'python') {
+            this.code = `${this.code}
+                         ${addition}`;
+        }
     }
 }
 

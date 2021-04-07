@@ -44,4 +44,30 @@ describe('EvalCode class', async () => {
         e.__init__();
         expect(e.get('command')).to.equal('python3 eval.py');
     });
+
+    //JS
+    it('Should be able to format code properly to get the STDOUT/STDERR', () => {
+        const code = `const returnArr = (arr) => arr`
+        const testCaseInfo = { expected: [1, 2, 3], case: `returnArr([1, 2, 3])` };
+        const language = 'javascript';
+        const e = new EvalCode(code, language, testCaseInfo);
+        e.__init__();
+        const expected = `const returnArr = (arr) => arr;console.log(returnArr([1, 2, 3]))`;
+        expect(e.get('code')).to.equal(expected);
+    });
+    //Python
+    it('Should be able to format code properly to get the STDOUT/STDERR', () => {
+        const code = 
+            `def getX(x):
+                return x`;
+        const testCaseInfo = { expected: 1, case: `getX(1)` };
+        const language = 'python';
+        const e = new EvalCode(code, language, testCaseInfo);
+        e.__init__();
+        const expected = 
+            `def getX(x):
+                  return x
+             print(getX(1))`;
+        expect(e.get('code')).to.equal(expected);
+    });
 });
