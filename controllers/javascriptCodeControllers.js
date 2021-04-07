@@ -1,4 +1,4 @@
-const main = require('../utils/evalCode.js');
+const EvalCode = require('../utils/codeHandler.js');
 
 // What I want the function to do
 // Take in raw code as a string
@@ -11,9 +11,10 @@ const main = require('../utils/evalCode.js');
 module.exports = {
     evalCode: async (req, res) => {
         try {
-            const { code, language, testCase } = req.body;
-            const response = await main(code, language, testCase);
-            res.status(200).send(response);
+            const { code, language, testCaseInfo } = req.body;
+            const e = new EvalCode(code, language, testCaseInfo);
+            const result = await e.main();
+            res.status(200).send(result);
         } catch(err) {
             console.log(err);
             res.json({ error: err.message, stack: err.stack });

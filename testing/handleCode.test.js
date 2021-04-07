@@ -70,12 +70,11 @@ describe('EvalCode class', async () => {
 
     //JS
     it('Should be able to collect results', async () => {
-        const code = `const addTwo = (a, b) => a + b`
-        const testCaseInfo = { expected: 3, case: `addTwo(1, 2)` };
+        const code = `const returnArr = (a) => a`
+        const testCaseInfo = { expected: [1, 2, 3], case: `returnArr([1, 2, 3])` };
         const language = 'javascript';
         const e = new EvalCode(code, language, testCaseInfo);
         await e.main();
-        console.log(e.get('result'))
-        expect(e.get('result')).to.equal('3\n');
+        assert.deepEqual(e.get('output'), [1, 2, 3])
     });
 });

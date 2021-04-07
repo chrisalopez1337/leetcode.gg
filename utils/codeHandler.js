@@ -1,6 +1,8 @@
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 const write = promisify(require('fs').writeFile);
+const assert = require('assert');
+const _ = require('lodash');
 
 const code = `const returnArr = (arr) => arr;`
 const testCase1 = { expected: [1, 2, 3], case: `returnArr([1, 2, 3])` };
@@ -92,6 +94,26 @@ class EvalCode {
         }
     }
 
+    compare() {
+        const { testCaseInfo, stdout } = this;
+        const expected = testCaseInfo.expected;
+        if (this.err || stdout.length < 1) { return false };
+        
+        let parsedAnswer = stdout;
+        parsedAnswer = parsedAnswer.split('\n').join('');
+        if (parsedAnswer.indexOf('}') > -1) {
+            let obj = {}
+            let answer = eval("obj =" + parsedAnswer);
+            parsedAnswer = answer;
+        } else {
+            parsedAnswer = JSON.parse(parsedAnswer);
+        }
+
+        this.output = parsedAnswer;
+
+        return _.isEqual(parsedAnswer, expected);
+    }
+
     getResult() {
         const { stderr, stdout, err, testCaseInfo } = this;
         this.result = 
@@ -100,26 +122,18 @@ class EvalCode {
                 stdout,
                 equal: false,
                 output: null,
+                err: {
+                    err_message: null,
+                    err_stack: null,
+                }
             }
-        // If the code broke we dont need to store anything
-        if (err) {
-            this.result['error'] = { err_message: err.message, err_stack: err.stack };
+        if (err?.message) {
+            this.result.err.err_message = err.message;
+            this.result.err.err_stack = err.stack;
             return;
         }
-        if (stdout.length > 0) {
-            const output = stdout.replace(/(\r\n|\n|\r)/gm, "");
-            this.stdout = output;
-        }
-        if (stdout === testCaseInfo.case) {
-            this.result['equal'] = true;
-            this.result['output'] = stdout;
-            return;
-        }
-        if (stdout !== testCaseInfo.case) {
-            this.result['equal'] = false;
-            this.result['output'] = stdout;
-            return;
-        }
+        this.result.equal = this.compare();
+        this.result.output = this.output;
     }
 
     async main() {

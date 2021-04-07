@@ -1,1 +1,1 @@
-const addTwo = (a, b) => a + b;console.log(addTwo(1, 2))
+const returnArr = (a) => a;console.log(returnArr({ test: [1, 2, 3], num: 1}))
