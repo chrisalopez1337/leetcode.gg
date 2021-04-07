@@ -18,16 +18,16 @@ class EvalCode {
             // Run the code
             await this.writeFile();
             await this.runCode();
-            // Return results
-            const results = 
+            // Store results
+            this.results = 
                 {
                     stdout: this.stdout,
                     stderr: this.stderr,
                 }
             if (this.err) {
-                results['error'] = { message: this.err.message, stack: this.err.stack }
+                this.results['error'] = { message: this.err.message, stack: this.err.stack }
             }
-            return results;
+            return this.results;
         } catch(err) {
             throw new Error(err);
         }
