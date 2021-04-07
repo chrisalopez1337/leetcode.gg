@@ -55,19 +55,27 @@ describe('EvalCode class', async () => {
         const expected = `const returnArr = (arr) => arr;console.log(returnArr([1, 2, 3]))`;
         expect(e.get('code')).to.equal(expected);
     });
-    //Python
-    it('Should be able to format code properly to get the STDOUT/STDERR', () => {
-        const code = 
-            `def getX(x):
-                return x`;
-        const testCaseInfo = { expected: 1, case: `getX(1)` };
-        const language = 'python';
+
+    //JS
+    it('Should be able to run code', async () => {
+        const code = `const addTwo = (a, b) => a + b`
+        const testCaseInfo = { expected: 3, case: `addTwo(1, 2)` };
+        const language = 'javascript';
         const e = new EvalCode(code, language, testCaseInfo);
         e.__init__();
-        const expected = 
-            `def getX(x):
-                  return x
-             print(getX(1))`;
-        expect(e.get('code')).to.equal(expected);
+        await e.writeFile();
+        await e.runCode();
+        expect(e.get('stdout')).to.equal('3\n');
+    });
+
+    //JS
+    it('Should be able to collect results', async () => {
+        const code = `const addTwo = (a, b) => a + b`
+        const testCaseInfo = { expected: 3, case: `addTwo(1, 2)` };
+        const language = 'javascript';
+        const e = new EvalCode(code, language, testCaseInfo);
+        await e.main();
+        console.log(e.get('result'))
+        expect(e.get('result')).to.equal('3\n');
     });
 });

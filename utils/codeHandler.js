@@ -6,6 +6,8 @@ const code = `const returnArr = (arr) => arr;`
 const testCase1 = { expected: [1, 2, 3], case: `returnArr([1, 2, 3])` };
 const language = 'javascript';
 
+// Will have to do a lot of work to port in Python and other langauges. Going to continue with Javascript as a MVP as it can all be compiled on one line.
+
 class EvalCode {
     constructor(code, language, testCaseInfo) {
         this.code = code;
@@ -66,8 +68,70 @@ class EvalCode {
             }
             this.code += addition;
         } else if (this.language === 'python') {
-            this.code = `${this.code}
-                         ${addition}`;
+            this.code = 
+            `${this.code}
+             ${addition}`;
+        }
+    }
+    // Should generate a better path.
+    async writeFile() {
+        try {
+            await write(this.fileName, this.code);
+        } catch(err) {
+            throw new Error(err);
+        }
+    }
+
+    async runCode() {
+        try {
+            const { stderr, stdout } = await exec(this.command);
+            this.stderr = stderr;
+            this.stdout = stdout;
+        } catch(err) {
+            this.err = err;
+        }
+    }
+
+    getResult() {
+        const { stderr, stdout, err, testCaseInfo } = this;
+        this.result = 
+            {
+                stderr,
+                stdout,
+                equal: false,
+                output: null,
+            }
+        // If the code broke we dont need to store anything
+        if (err) {
+            this.result['error'] = { err_message: err.message, err_stack: err.stack };
+            return;
+        }
+        if (stdout.length > 0) {
+            const output = stdout.replace(/(\r\n|\n|\r)/gm, "");
+            this.stdout = output;
+        }
+        if (stdout === testCaseInfo.case) {
+            this.result['equal'] = true;
+            this.result['output'] = stdout;
+            return;
+        }
+        if (stdout !== testCaseInfo.case) {
+            this.result['equal'] = false;
+            this.result['output'] = stdout;
+            return;
+        }
+    }
+
+    async main() {
+        try {
+            this.__init__();
+            await this.writeFile();
+            await this.runCode();
+            this.getResult();
+            return this.result;
+        } catch(err) {
+            console.log(err);
+            throw new Error(err);
         }
     }
 }
