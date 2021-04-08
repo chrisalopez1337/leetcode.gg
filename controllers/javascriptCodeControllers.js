@@ -17,7 +17,23 @@ module.exports = {
             res.status(200).send(result);
         } catch(err) {
             console.log(err);
-            res.json({ error: err.message, stack: err.stack });
+            throw new Error(err);
+        }
+    },
+
+    evalMultiple: async (req, res) => {
+        try {
+            const allResults = {};
+            const { code, language, allTests } = req.body;
+            for (let i = 0; i < allTests.length; i++) {
+                const e = new EvalCode(code, language, allTests[i]);
+                const result = await e.main();
+                allResults[i+1] = result;
+            }
+            res.status(200).send(allResults);
+        } catch(err) {
+            console.log(err);
+            throw new Error(err);
         }
     }
 }

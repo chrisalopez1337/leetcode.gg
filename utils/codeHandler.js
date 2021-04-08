@@ -110,6 +110,7 @@ class EvalCode {
         }
 
         this.output = parsedAnswer;
+        this.expected = expected;
 
         return _.isEqual(parsedAnswer, expected);
     }
@@ -134,6 +135,7 @@ class EvalCode {
         }
         this.result.equal = this.compare();
         this.result.output = this.output;
+        this.result.expected = this.expected;
     }
 
     async main() {

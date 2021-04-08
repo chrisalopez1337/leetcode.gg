@@ -106,6 +106,7 @@ export default function TodaysQuestion() {
                         <QuestionNavButton selected={render === 'prompt' ? true : false} name="prompt" onClick={(e) => buttonHandler(e)}>Prompt</QuestionNavButton>       
                         <QuestionNavButton selected={render === 'notepad' ? true : false} name="notepad" onClick={(e) => buttonHandler(e)}>Notepad</QuestionNavButton>       
                         <QuestionNavButton selected={render === 'solution' ? true : false} name="solution" onClick={(e) => buttonHandler(e)}>Solution</QuestionNavButton>       
+                        <QuestionNavButton selected={render === 'eval' ? true : false} name="eval" onClick={(e) => buttonHandler(e)}>Output</QuestionNavButton>
                     </QuestionNavBar>
                     {itemRender}
                 </QuestionWrapper>
