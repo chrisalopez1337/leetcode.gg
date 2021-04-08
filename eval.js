@@ -1,1 +1,1 @@
-const returnArr = (a) => a;console.log(returnArr({ test: [1, 2, 3], num: 1}))
+const returnArr = (a) => a;console.log(returnArr({ test: [3], num: 6 }))

@@ -16,8 +16,7 @@ module.exports = {
             const result = await e.main();
             res.status(200).send(result);
         } catch(err) {
-            console.log(err);
-            throw new Error(err);
+            res.status(500).send({ err_message: err.message, err_stack: err.stack });
         }
     },
 
@@ -28,12 +27,12 @@ module.exports = {
             for (let i = 0; i < allTests.length; i++) {
                 const e = new EvalCode(code, language, allTests[i]);
                 const result = await e.main();
+                console.log(result);
                 allResults[i+1] = result;
             }
             res.status(200).send(allResults);
         } catch(err) {
-            console.log(err);
-            throw new Error(err);
+            res.status(500).send({ err_message: err.message, err_stack: err.stack });
         }
     }
 }
