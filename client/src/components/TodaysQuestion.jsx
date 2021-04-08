@@ -95,7 +95,7 @@ export default function TodaysQuestion() {
         : render === 'solution'
         ? <TodaysQuestionSolution />
         : render === 'eval'
-        ? <Eval data={evaledCode} />
+        ? <Eval data={evaledCode['1']} allCases={evaledCode} />
         : <></>;
     return (
         <Container>

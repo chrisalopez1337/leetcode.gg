@@ -1,1 +1,3 @@
-const returnArr = (a) => a;console.log(returnArr({ test: [3], num: 6 }))
+function addTwo(a,b) {
+  return a + b;
+};console.log(addTwo(56, 44))

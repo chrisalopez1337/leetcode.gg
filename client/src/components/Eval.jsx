@@ -39,7 +39,7 @@ const ErrorWrapper = styled.div`
     margin: 10px;
 `;
 
-export default function Eval({ data }) {
+export default function Eval({ data, allCases }) {
     if (!data) {
         return ( <Container></Container> );
     }
@@ -81,7 +81,13 @@ export default function Eval({ data }) {
             </ResponseWrapper>
         );
 
-
+    function generateArray(allCases) {
+        let arr = [];
+        for (const key in allCases) {
+            arr.push({ number: key, expected: allCases[key].expected, output: allCases[key].output });
+        }
+        return arr;
+    }
 
     const render = renderType == 'passed'
         ? passedRender
@@ -93,7 +99,7 @@ export default function Eval({ data }) {
     return (
         <Container>
             {render}
-            <TestCase expected={expected} output={output} />
+            { generateArray(allCases).map(({ number, expected, output }) => <TestCase expected={expected} output={output} number={number}/>)}
         </Container>
     );
 }

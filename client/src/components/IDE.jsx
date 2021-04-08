@@ -68,8 +68,19 @@ export default function IDE({ setEvaledCode }) {
     }, [])
 
     function handleRunCode() {
-        const data = { code, language: 'javascript', testCaseInfo: { case: 'addTwo(1,2)', expected: 3 } };
-        axios.post('/api/js/eval-code', data)
+        const allTests =
+            [
+                {
+                    case: 'addTwo(1,2)',
+                    expected: 3,
+                },
+                {
+                    case: 'addTwo(56, 44)',
+                    expected: 100,
+                },
+            ];
+        const data = { code, language: 'javascript', allTests };
+        axios.post('/api/js/eval-all', data)
             .then(({ data }) => {
                 setEvaledCode(data);
             })

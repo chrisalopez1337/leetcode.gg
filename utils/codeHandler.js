@@ -80,6 +80,7 @@ class EvalCode {
         try {
             await write(this.fileName, this.code);
         } catch(err) {
+            console.log(err);
             throw new Error(err);
         }
     }
@@ -90,6 +91,7 @@ class EvalCode {
             this.stderr = stderr;
             this.stdout = stdout;
         } catch(err) {
+            console.log(err);
             this.err = err;
         }
     }
@@ -143,6 +145,7 @@ class EvalCode {
             this.__init__();
             await this.writeFile();
             await this.runCode();
+            console.log(this);
             this.getResult();
             return this.result;
         } catch(err) {

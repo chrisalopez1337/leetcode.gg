@@ -23,9 +23,16 @@ text-decoration: underline;
     }
 `;
 
-export default function TestCase({ expected, output }) {
-    console.log(expected, output)
-    const [open, setOpen] = useState(false);
+export default function TestCase({ expected, output, number }) {
+    console.log(number);
+    const [open, setOpen] = useState(null);
+    useEffect(() => {
+        if (number === 1) {
+            setOpen(true)
+        } else {
+            setOpen(false);
+        }
+    }, [number])
 
     const openHint = 
         (
@@ -35,12 +42,12 @@ export default function TestCase({ expected, output }) {
             </>
         );
 
-    const openRender = open
+    const openRender = open === true
         ? openHint
         : <></>;
     return (
         <>
-            <Title onClick={() => setOpen(!open)}>Test Case #1</Title>
+            <Title onClick={() => setOpen(!open)}>Test Case #{number}</Title>
             {openRender}
         </>
     );

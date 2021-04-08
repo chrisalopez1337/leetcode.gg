@@ -12,6 +12,7 @@ module.exports = {
     evalCode: async (req, res) => {
         try {
             const { code, language, testCaseInfo } = req.body;
+            console.log(req.body);
             const e = new EvalCode(code, language, testCaseInfo);
             const result = await e.main();
             res.status(200).send(result);
@@ -26,8 +27,8 @@ module.exports = {
             const { code, language, allTests } = req.body;
             for (let i = 0; i < allTests.length; i++) {
                 const e = new EvalCode(code, language, allTests[i]);
+                console.log('sjkfhsdpifjspdojfp[osdjfpsdjfposdjfposjdfpoisdjnfpoisdfopisdnfoisndofi]')
                 const result = await e.main();
-                console.log(result);
                 allResults[i+1] = result;
             }
             res.status(200).send(allResults);
